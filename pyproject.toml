@@ -13,7 +13,11 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=8,<9", "httpx>=0.27,<1"]
-ml = ["torch>=2.3", "ultralytics>=8.3", "onnxruntime>=1.18", "coremltools>=8", "opencv-python-headless>=4.10,<5"]
+camera = ["opencv-python>=4.10,<5"]
+ml = ["torch>=2.3", "ultralytics>=8.3", "onnxruntime>=1.18", "coremltools>=8", "opencv-python>=4.10,<5"]
+
+[project.scripts]
+plantvision-camera = "app.desktop:main"
 
 [tool.setuptools]
 packages = ["app"]
