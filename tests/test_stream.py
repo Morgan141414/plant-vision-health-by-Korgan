@@ -1,5 +1,6 @@
-import cv2
 import numpy as np
+from io import BytesIO
+from PIL import Image
 from fastapi.testclient import TestClient
 
 from app.main import app
@@ -9,9 +10,9 @@ client = TestClient(app)
 
 
 def jpeg_frame(frame: np.ndarray) -> bytes:
-    ok, encoded = cv2.imencode(".jpg", frame)
-    assert ok
-    return encoded.tobytes()
+    encoded = BytesIO()
+    Image.fromarray(frame[:, :, ::-1], "RGB").save(encoded, format="JPEG")
+    return encoded.getvalue()
 
 
 def test_stream_returns_demo_contract_for_jpeg_frame():

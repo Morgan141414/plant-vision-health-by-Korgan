@@ -15,8 +15,8 @@
 ## Быстрый запуск
 
 ```bash
-python3.11 -m venv .venv
-source .venv/bin/activate
+python3.13 -m venv .venv313
+source .venv313/bin/activate
 pip install -e '.[dev]'
 uvicorn app.main:app --reload
 ```

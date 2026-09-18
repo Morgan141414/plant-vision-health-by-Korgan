@@ -2,10 +2,9 @@
 
 from __future__ import annotations
 
-import cv2
-import numpy as np
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
+from app.image_io import decode_image
 from app.main import analyze_frame
 from app.schemas import AnalysisResponse
 
@@ -39,7 +38,7 @@ async def stream_jpeg_frames(websocket: WebSocket) -> None:
                 )
                 continue
 
-            frame = cv2.imdecode(np.frombuffer(payload, np.uint8), cv2.IMREAD_COLOR)
+            frame = decode_image(payload)
             if frame is None:
                 await websocket.send_json(
                     _error("INVALID_JPEG", "Не удалось прочитать JPEG-кадр")
