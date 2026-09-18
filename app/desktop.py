@@ -8,6 +8,7 @@ the selected local camera and renders observations over the live preview.
 from __future__ import annotations
 
 import argparse
+import platform
 import sys
 
 try:
@@ -48,12 +49,15 @@ def _draw_panel(frame, observation: dict) -> None:
 
 
 def run_camera(camera_index: int = 0, width: int = 1280, height: int = 720) -> None:
-    capture = cv2.VideoCapture(camera_index)
+    backend = cv2.CAP_AVFOUNDATION if platform.system() == "Darwin" else cv2.CAP_ANY
+    capture = cv2.VideoCapture(camera_index, backend)
     capture.set(cv2.CAP_PROP_FRAME_WIDTH, width)
     capture.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
     if not capture.isOpened():
         raise RuntimeError(
-            f"Не удалось открыть камеру {camera_index}. Проверьте разрешение Camera для Terminal и номер камеры."
+            f"Не удалось открыть камеру {camera_index}. В macOS откройте System Settings > "
+            "Privacy & Security > Camera и разрешите доступ Terminal или VS Code, затем полностью "
+            "перезапустите это приложение. Также проверьте номер камеры через --camera 1."
         )
 
     window_name = "PlantVision AI - локальная камера"
