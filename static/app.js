@@ -15,6 +15,9 @@ button.addEventListener('click', async () => {
     const data = await response.json(); if (!response.ok) throw new Error(data.detail);
     document.querySelector('#coverage').textContent = `${data.vegetation.coverage_percent}%`;
     document.querySelector('#bbox').textContent = data.vegetation.bbox ? data.vegetation.bbox.join(', ') : 'не обнаружена';
+    document.querySelector('#plant').textContent = data.plant.name === 'unavailable'
+      ? 'Не определено: требуется валидированная локальная модель'
+      : `${data.plant.name} (${Math.round(data.plant.confidence * 100)}%)`;
     document.querySelector('#status').textContent = data.health.status.replace('_', ' ');
     document.querySelector('#disclaimer').textContent = data.disclaimer;
     result.hidden = false;
